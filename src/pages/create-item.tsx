@@ -13,9 +13,7 @@ const CreateItem = () => {
           price: "",
           image: "",
         }}
-        onSubmit={(values, actions) => {
-          console.log(values);
-
+        onSubmit={async (values, actions) => {
           setTimeout(() => {
             alert(JSON.stringify(values, null, 2));
             actions.setSubmitting(false);

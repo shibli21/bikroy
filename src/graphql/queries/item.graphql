@@ -1,0 +1,10 @@
+query Item($id: Int!) {
+  item(id: $id) {
+    id
+    title
+    description
+    price
+    image
+    largeImage
+  }
+}

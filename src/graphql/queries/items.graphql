@@ -1,0 +1,10 @@
+query Items {
+  items {
+    id
+    title
+    description
+    price
+    image
+    largeImage
+  }
+}
