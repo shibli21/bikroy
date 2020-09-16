@@ -1,16 +1,39 @@
-import { Box, Button, Flex, Grid, Image, Stack } from "@chakra-ui/core";
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Heading,
+  Image,
+  Spinner,
+} from "@chakra-ui/core";
 import React from "react";
-import { useItemsQuery } from "../generated/graphql";
+import { useDeleteItemMutation, useItemsQuery } from "../generated/graphql";
 
 interface Props {}
 
 const items = (props: Props) => {
-  const { data } = useItemsQuery();
+  const { data, loading, error } = useItemsQuery();
+  const [deleteItem] = useDeleteItemMutation();
 
-  if (!data) {
-    return null;
+  if (loading) {
+    return (
+      <Spinner
+        thickness="4px"
+        speed="0.65s"
+        emptyColor="gray.200"
+        color="blue.500"
+        size="xl"
+      />
+    );
+  }
+  if (error) {
+    return <Heading>error fetching data</Heading>;
   }
 
+  if (data && data.items.length === 0) {
+    return <Heading>No items!!</Heading>;
+  }
   return (
     <Box maxW="800px" marginX="auto">
       <br />
@@ -30,7 +53,11 @@ const items = (props: Props) => {
               <Button variant="solid" variantColor="orange">
                 add to cart
               </Button>
-              <Button variant="solid" variantColor="red">
+              <Button
+                variant="solid"
+                variantColor="red"
+                onClick={() => deleteItem({ variables: { id: i.id } })}
+              >
                 Delete
               </Button>
             </Flex>
