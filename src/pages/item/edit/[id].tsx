@@ -50,7 +50,7 @@ const UpdateItem = () => {
         initialValues={{
           title: itemData.item.title,
           description: itemData.item.description,
-          price: itemData.item.price,
+          price: `${itemData.item.price}`,
         }}
         onSubmit={async (values) => {
           const { data } = await updateItem({
@@ -58,7 +58,7 @@ const UpdateItem = () => {
               id: intId,
               title: values.title,
               description: values.description,
-              price: 24,
+              price: parseInt(values.price),
             },
           });
           console.log(data);
