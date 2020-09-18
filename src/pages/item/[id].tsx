@@ -11,6 +11,7 @@ import {
   Spinner,
 } from "@chakra-ui/core";
 import Layout from "../../components/Layout";
+import NextLink from "next/link";
 
 const Item = () => {
   const { query } = useRouter();
@@ -52,7 +53,9 @@ const Item = () => {
       <Flex mt={4}>
         <Button mr={2} variant="solid" variantColor="teal">
           <Icon name="edit" mr={2} />
-          Edit
+          <NextLink href="/item/edit/[id]" as={`/item/edit/${data.item.id}`}>
+            Edit
+          </NextLink>
         </Button>
         <Button mr={2} variant="solid" variantColor="orange">
           <Icon name="add" mr={2} />
