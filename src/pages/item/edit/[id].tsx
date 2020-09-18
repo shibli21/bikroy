@@ -45,42 +45,44 @@ const UpdateItem = () => {
   }
 
   return (
-    <Box maxW="400px" mx="auto">
-      <Formik
-        initialValues={{
-          title: itemData.item.title,
-          description: itemData.item.description,
-          price: `${itemData.item.price}`,
-        }}
-        onSubmit={async (values) => {
-          const { data } = await updateItem({
-            variables: {
-              id: intId,
-              title: values.title,
-              description: values.description,
-              price: parseInt(values.price),
-            },
-          });
-          console.log(data);
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Form>
-            <InputField name="title" label="Title" />
-            <InputField name="description" label="Description" />
-            <InputField name="price" label="Price" />
-            <Button
-              mt={4}
-              variantColor="teal"
-              isLoading={isSubmitting}
-              type="submit"
-            >
-              Update Item
-            </Button>
-          </Form>
-        )}
-      </Formik>
-    </Box>
+    <Layout>
+      <Box maxW="400px" mx="auto">
+        <Formik
+          initialValues={{
+            title: itemData.item.title,
+            description: itemData.item.description,
+            price: `${itemData.item.price}`,
+          }}
+          onSubmit={async (values) => {
+            const { data } = await updateItem({
+              variables: {
+                id: intId,
+                title: values.title,
+                description: values.description,
+                price: parseInt(values.price),
+              },
+            });
+            console.log(data);
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              <InputField name="title" label="Title" />
+              <InputField name="description" label="Description" />
+              <InputField name="price" label="Price" />
+              <Button
+                mt={4}
+                variantColor="teal"
+                isLoading={isSubmitting}
+                type="submit"
+              >
+                Update Item
+              </Button>
+            </Form>
+          )}
+        </Formik>
+      </Box>
+    </Layout>
   );
 };
 
