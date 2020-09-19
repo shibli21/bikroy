@@ -13,9 +13,9 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  hello: Scalars['String'];
   item?: Maybe<Item>;
   items?: Maybe<Array<Item>>;
+  hello: Scalars['String'];
 };
 
 
@@ -40,6 +40,7 @@ export type Mutation = {
   createItem: Item;
   deleteItem: Scalars['Boolean'];
   updateItem?: Maybe<Item>;
+  register: UserResponse;
 };
 
 
@@ -60,12 +61,57 @@ export type MutationUpdateItemArgs = {
   id: Scalars['Int'];
 };
 
+
+export type MutationRegisterArgs = {
+  options: UserInputType;
+};
+
 export type ItemInput = {
   title: Scalars['String'];
   description: Scalars['String'];
   price: Scalars['Float'];
-  image?: Maybe<Scalars['String']>;
-  largeImage?: Maybe<Scalars['String']>;
+  image: Scalars['String'];
+  largeImage: Scalars['String'];
+};
+
+export type UserResponse = {
+  __typename?: 'UserResponse';
+  errors?: Maybe<Array<FieldError>>;
+  user?: Maybe<User>;
+};
+
+export type FieldError = {
+  __typename?: 'FieldError';
+  field: Scalars['String'];
+  message: Scalars['String'];
+};
+
+export type User = {
+  __typename?: 'User';
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
+  resetToken?: Maybe<Scalars['String']>;
+  resetTokenExpiry?: Maybe<Scalars['String']>;
+  permission: Permissions;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export enum Permissions {
+  Admin = 'ADMIN',
+  User = 'USER',
+  Itemcreate = 'ITEMCREATE',
+  Itemdelete = 'ITEMDELETE',
+  Itemupdate = 'ITEMUPDATE',
+  Permissionupdate = 'PERMISSIONUPDATE'
+}
+
+export type UserInputType = {
+  name: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type CreateItemMutationVariables = Exact<{
@@ -89,6 +135,22 @@ export type DeleteItemMutationVariables = Exact<{
 export type DeleteItemMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'deleteItem'>
+);
+
+export type RegisterMutationVariables = Exact<{
+  options: UserInputType;
+}>;
+
+
+export type RegisterMutation = (
+  { __typename?: 'Mutation' }
+  & { register: (
+    { __typename?: 'UserResponse' }
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'name' | 'email' | 'password' | 'resetToken' | 'resetTokenExpiry' | 'permission'>
+    )> }
+  ) }
 );
 
 export type UpdateItemMutationVariables = Exact<{
@@ -201,6 +263,46 @@ export function useDeleteItemMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteItemMutationHookResult = ReturnType<typeof useDeleteItemMutation>;
 export type DeleteItemMutationResult = Apollo.MutationResult<DeleteItemMutation>;
 export type DeleteItemMutationOptions = Apollo.BaseMutationOptions<DeleteItemMutation, DeleteItemMutationVariables>;
+export const RegisterDocument = gql`
+    mutation Register($options: UserInputType!) {
+  register(options: $options) {
+    user {
+      id
+      name
+      email
+      password
+      resetToken
+      resetTokenExpiry
+      permission
+    }
+  }
+}
+    `;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+
+/**
+ * __useRegisterMutation__
+ *
+ * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerMutation, { data, loading, error }] = useRegisterMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, baseOptions);
+      }
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const UpdateItemDocument = gql`
     mutation UpdateItem($id: Int!, $title: String!, $description: String!, $price: Int!) {
   updateItem(id: $id, title: $title, description: $description, price: $price) {
