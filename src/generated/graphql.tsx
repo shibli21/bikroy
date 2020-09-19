@@ -15,7 +15,7 @@ export type Query = {
   __typename?: 'Query';
   item?: Maybe<Item>;
   items?: Maybe<Array<Item>>;
-  hello: Scalars['String'];
+  me?: Maybe<User>;
 };
 
 
@@ -35,12 +35,35 @@ export type Item = {
   updatedAt: Scalars['String'];
 };
 
+export type User = {
+  __typename?: 'User';
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
+  resetToken?: Maybe<Scalars['String']>;
+  resetTokenExpiry?: Maybe<Scalars['String']>;
+  permission: Permissions;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export enum Permissions {
+  Admin = 'ADMIN',
+  User = 'USER',
+  Itemcreate = 'ITEMCREATE',
+  Itemdelete = 'ITEMDELETE',
+  Itemupdate = 'ITEMUPDATE',
+  Permissionupdate = 'PERMISSIONUPDATE'
+}
+
 export type Mutation = {
   __typename?: 'Mutation';
   createItem: Item;
   deleteItem: Scalars['Boolean'];
   updateItem?: Maybe<Item>;
   register: UserResponse;
+  login: UserResponse;
 };
 
 
@@ -66,6 +89,12 @@ export type MutationRegisterArgs = {
   options: UserInputType;
 };
 
+
+export type MutationLoginArgs = {
+  password: Scalars['String'];
+  email: Scalars['String'];
+};
+
 export type ItemInput = {
   title: Scalars['String'];
   description: Scalars['String'];
@@ -85,28 +114,6 @@ export type FieldError = {
   field: Scalars['String'];
   message: Scalars['String'];
 };
-
-export type User = {
-  __typename?: 'User';
-  id: Scalars['Float'];
-  name: Scalars['String'];
-  email: Scalars['String'];
-  password: Scalars['String'];
-  resetToken?: Maybe<Scalars['String']>;
-  resetTokenExpiry?: Maybe<Scalars['String']>;
-  permission: Permissions;
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-};
-
-export enum Permissions {
-  Admin = 'ADMIN',
-  User = 'USER',
-  Itemcreate = 'ITEMCREATE',
-  Itemdelete = 'ITEMDELETE',
-  Itemupdate = 'ITEMUPDATE',
-  Permissionupdate = 'PERMISSIONUPDATE'
-}
 
 export type UserInputType = {
   name: Scalars['String'];
@@ -135,6 +142,26 @@ export type DeleteItemMutationVariables = Exact<{
 export type DeleteItemMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'deleteItem'>
+);
+
+export type LoginMutationVariables = Exact<{
+  password: Scalars['String'];
+  email: Scalars['String'];
+}>;
+
+
+export type LoginMutation = (
+  { __typename?: 'Mutation' }
+  & { login: (
+    { __typename?: 'UserResponse' }
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'name' | 'email'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  ) }
 );
 
 export type RegisterMutationVariables = Exact<{
@@ -263,6 +290,47 @@ export function useDeleteItemMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteItemMutationHookResult = ReturnType<typeof useDeleteItemMutation>;
 export type DeleteItemMutationResult = Apollo.MutationResult<DeleteItemMutation>;
 export type DeleteItemMutationOptions = Apollo.BaseMutationOptions<DeleteItemMutation, DeleteItemMutationVariables>;
+export const LoginDocument = gql`
+    mutation Login($password: String!, $email: String!) {
+  login(password: $password, email: $email) {
+    user {
+      id
+      name
+      email
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+    `;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      password: // value for 'password'
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const RegisterDocument = gql`
     mutation Register($options: UserInputType!) {
   register(options: $options) {
