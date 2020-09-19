@@ -2,14 +2,17 @@ import { Box, Button, Flex, Heading, Link } from "@chakra-ui/core";
 import React from "react";
 
 import Nextlink from "next/link";
-import { useMeQuery } from "../generated/graphql";
+import {
+  MeDocument,
+  useLogoutMutation,
+  useMeQuery,
+} from "../generated/graphql";
 
 const NavBar = () => {
   const { data } = useMeQuery();
+  const [logout, { loading }] = useLogoutMutation();
 
   let body = null;
-
-  console.log(data);
 
   if (data?.me) {
     body = (
@@ -20,10 +23,28 @@ const NavBar = () => {
           </Link>
         </Nextlink>
         <Nextlink href="/create-item">
-          <Link>
-            <Button variant="solid">Sell Item</Button>
+          <Link mr={4} color="white">
+            Sell Item
           </Link>
         </Nextlink>
+        <Link color="white">
+          <Button
+            color="black"
+            variant="solid"
+            isLoading={loading}
+            onClick={() =>
+              logout({
+                refetchQueries: [
+                  {
+                    query: MeDocument,
+                  },
+                ],
+              })
+            }
+          >
+            Logout
+          </Button>
+        </Link>
       </Box>
     );
   } else {
