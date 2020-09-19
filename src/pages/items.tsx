@@ -74,7 +74,14 @@ const items = (props: Props) => {
                   mr={2}
                   variant="solid"
                   variantColor="red"
-                  onClick={() => deleteItem({ variables: { id: i.id } })}
+                  onClick={() =>
+                    deleteItem({
+                      variables: { id: i.id },
+                      update: (cache) => {
+                        cache.evict({ id: "Item:" + i.id });
+                      },
+                    })
+                  }
                 >
                   <Icon name="delete" mr={2} />
                   Delete

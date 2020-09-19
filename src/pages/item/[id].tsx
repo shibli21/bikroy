@@ -1,5 +1,5 @@
 import React from "react";
-import { useItemQuery } from "../../generated/graphql";
+import { useDeleteItemMutation, useItemQuery } from "../../generated/graphql";
 import { useRouter } from "next/router";
 import {
   Box,
@@ -23,7 +23,8 @@ const Item = () => {
       id: intId,
     },
   });
-
+  const [deleteItem] = useDeleteItemMutation();
+  const router = useRouter();
   if (loading) {
     return (
       <Spinner
@@ -65,7 +66,15 @@ const Item = () => {
           mr={2}
           variant="solid"
           variantColor="red"
-          // onClick={() => deleteItem({ variables: { id: data.item.id } })}
+          onClick={() => {
+            deleteItem({
+              variables: { id: data.item.id },
+              update: (cache) => {
+                cache.evict({ id: "Item:" + data.item.id });
+              },
+            });
+            router.push("/");
+          }}
         >
           <Icon name="delete" mr={2} />
           Delete

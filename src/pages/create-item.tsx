@@ -1,5 +1,6 @@
 import { Box, Button } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import InputField from "../components/InputField";
 import Layout from "../components/Layout";
@@ -8,7 +9,7 @@ import { handleImageUpload } from "../utils/handleImageUpload";
 
 const CreateItem = () => {
   const [file, setFile] = useState(null);
-
+  const router = useRouter();
   const [createItem, { data }] = useCreateItemMutation();
 
   return (
@@ -34,8 +35,11 @@ const CreateItem = () => {
                   largeImage: imgUrl.largeImage,
                 },
               },
+              update: (cache) => {
+                cache.evict({ fieldName: "items" });
+              },
             });
-            console.log(data);
+            router.push("/items");
           }}
         >
           {({ isSubmitting, setFieldValue }) => (
