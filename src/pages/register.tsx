@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import InputField from "../components/InputField";
 import Layout from "../components/Layout";
 import {
+  MeDocument,
   useCreateItemMutation,
   useRegisterMutation,
 } from "../generated/graphql";
@@ -32,13 +33,13 @@ const Register = () => {
                   password: values.password,
                 },
               },
-              //   update: (cache) => {
-              //     cache.evict({ fieldName: "items" });
-              //   },
+              refetchQueries: [
+                {
+                  query: MeDocument,
+                },
+              ],
             });
-            console.log(data);
-
-            // router.push("/items");
+            router.push("/");
           }}
         >
           {({ isSubmitting }) => (
