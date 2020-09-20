@@ -1,0 +1,6 @@
+mutation RequestReset($email: String!) {
+  requestReset(email: $email) {
+    field
+    message
+  }
+}

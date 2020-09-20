@@ -62,6 +62,8 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   register: UserResponse;
   login: UserResponse;
+  requestReset: FieldErrorSuccess;
+  resetPassword: UserResponse;
 };
 
 
@@ -93,6 +95,17 @@ export type MutationLoginArgs = {
   email: Scalars['String'];
 };
 
+
+export type MutationRequestResetArgs = {
+  email: Scalars['String'];
+};
+
+
+export type MutationResetPasswordArgs = {
+  password: Scalars['String'];
+  resetToken: Scalars['String'];
+};
+
 export type ItemInput = {
   title: Scalars['String'];
   description: Scalars['String'];
@@ -117,6 +130,12 @@ export type UserInputType = {
   name: Scalars['String'];
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type FieldErrorSuccess = {
+  __typename?: 'FieldErrorSuccess';
+  field: Scalars['String'];
+  message: Scalars['String'];
 };
 
 export type CreateItemMutationVariables = Exact<{
@@ -186,6 +205,19 @@ export type RegisterMutation = (
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
     )>> }
+  ) }
+);
+
+export type RequestResetMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type RequestResetMutation = (
+  { __typename?: 'Mutation' }
+  & { requestReset: (
+    { __typename?: 'FieldErrorSuccess' }
+    & Pick<FieldErrorSuccess, 'field' | 'message'>
   ) }
 );
 
@@ -422,6 +454,39 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const RequestResetDocument = gql`
+    mutation RequestReset($email: String!) {
+  requestReset(email: $email) {
+    field
+    message
+  }
+}
+    `;
+export type RequestResetMutationFn = Apollo.MutationFunction<RequestResetMutation, RequestResetMutationVariables>;
+
+/**
+ * __useRequestResetMutation__
+ *
+ * To run a mutation, you first call `useRequestResetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRequestResetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [requestResetMutation, { data, loading, error }] = useRequestResetMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useRequestResetMutation(baseOptions?: Apollo.MutationHookOptions<RequestResetMutation, RequestResetMutationVariables>) {
+        return Apollo.useMutation<RequestResetMutation, RequestResetMutationVariables>(RequestResetDocument, baseOptions);
+      }
+export type RequestResetMutationHookResult = ReturnType<typeof useRequestResetMutation>;
+export type RequestResetMutationResult = Apollo.MutationResult<RequestResetMutation>;
+export type RequestResetMutationOptions = Apollo.BaseMutationOptions<RequestResetMutation, RequestResetMutationVariables>;
 export const UpdateItemDocument = gql`
     mutation UpdateItem($id: Int!, $title: String!, $description: String!, $price: Int!) {
   updateItem(id: $id, title: $title, description: $description, price: $price) {

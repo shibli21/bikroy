@@ -5,7 +5,7 @@ import React from "react";
 import InputField from "../components/InputField";
 import Layout from "../components/Layout";
 import { MeDocument, useLoginMutation, useMeQuery } from "../generated/graphql";
-
+import NextLink from "next/link";
 const Register = () => {
   const router = useRouter();
   const [login] = useLoginMutation();
@@ -43,6 +43,16 @@ const Register = () => {
                 type="submit"
               >
                 Login
+              </Button>
+
+              <Button
+                ml={4}
+                mt={4}
+                variantColor="red"
+                isLoading={isSubmitting}
+                type="submit"
+              >
+                <NextLink href="/forgot-password">Forgot password</NextLink>
               </Button>
             </Form>
           )}
