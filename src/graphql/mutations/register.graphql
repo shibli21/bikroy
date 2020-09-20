@@ -4,10 +4,11 @@ mutation Register($options: UserInputType!) {
       id
       name
       email
-      password
-      resetToken
-      resetTokenExpiry
       permission
+    }
+    errors {
+      field
+      message
     }
   }
 }

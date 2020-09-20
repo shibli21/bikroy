@@ -40,9 +40,6 @@ export type User = {
   id: Scalars['Float'];
   name: Scalars['String'];
   email: Scalars['String'];
-  password: Scalars['String'];
-  resetToken?: Maybe<Scalars['String']>;
-  resetTokenExpiry?: Maybe<Scalars['String']>;
   permission: Permissions;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
@@ -157,7 +154,7 @@ export type LoginMutation = (
     { __typename?: 'UserResponse' }
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'name' | 'email'>
+      & Pick<User, 'id' | 'name' | 'email' | 'permission'>
     )>, errors?: Maybe<Array<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
@@ -184,8 +181,11 @@ export type RegisterMutation = (
     { __typename?: 'UserResponse' }
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'name' | 'email' | 'password' | 'resetToken' | 'resetTokenExpiry' | 'permission'>
-    )> }
+      & Pick<User, 'id' | 'name' | 'email' | 'permission'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
   ) }
 );
 
@@ -317,6 +317,7 @@ export const LoginDocument = gql`
       id
       name
       email
+      permission
     }
     errors {
       field
@@ -387,10 +388,11 @@ export const RegisterDocument = gql`
       id
       name
       email
-      password
-      resetToken
-      resetTokenExpiry
       permission
+    }
+    errors {
+      field
+      message
     }
   }
 }
