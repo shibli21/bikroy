@@ -58,6 +58,7 @@ const items = (props: Props) => {
               </NextLink>
               <h2>Description : {i.description}</h2>
               <h2>Price : {i.price}</h2>
+              <h2>Posted by : {i.creator.name}</h2>
               <Image src={i.image} alt={i.title} />
               <Flex my={4} ml={2}>
                 <Button mr={2} variant="solid" variantColor="teal">

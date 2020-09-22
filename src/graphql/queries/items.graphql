@@ -6,5 +6,13 @@ query Items {
     price
     image
     largeImage
+    creatorId
+    creator {
+      id
+      name
+      email
+    }
+    createdAt
+    updatedAt
   }
 }

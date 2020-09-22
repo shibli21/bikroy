@@ -31,6 +31,8 @@ export type Item = {
   price: Scalars['Float'];
   image?: Maybe<Scalars['String']>;
   largeImage?: Maybe<Scalars['String']>;
+  creatorId: Scalars['Float'];
+  creator: User;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -277,7 +279,11 @@ export type ItemsQuery = (
   { __typename?: 'Query' }
   & { items?: Maybe<Array<(
     { __typename?: 'Item' }
-    & Pick<Item, 'id' | 'title' | 'description' | 'price' | 'image' | 'largeImage'>
+    & Pick<Item, 'id' | 'title' | 'description' | 'price' | 'image' | 'largeImage' | 'creatorId' | 'createdAt' | 'updatedAt'>
+    & { creator: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'name' | 'email'>
+    ) }
   )>> }
 );
 
@@ -639,6 +645,14 @@ export const ItemsDocument = gql`
     price
     image
     largeImage
+    creatorId
+    creator {
+      id
+      name
+      email
+    }
+    createdAt
+    updatedAt
   }
 }
     `;
