@@ -268,7 +268,11 @@ export type ItemQuery = (
   { __typename?: 'Query' }
   & { item?: Maybe<(
     { __typename?: 'Item' }
-    & Pick<Item, 'id' | 'title' | 'description' | 'price' | 'image' | 'largeImage'>
+    & Pick<Item, 'title' | 'id' | 'price' | 'description' | 'image' | 'largeImage'>
+    & { creator: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'name' | 'email'>
+    ) }
   )> }
 );
 
@@ -601,12 +605,17 @@ export type UpdateItemMutationOptions = Apollo.BaseMutationOptions<UpdateItemMut
 export const ItemDocument = gql`
     query Item($id: Int!) {
   item(id: $id) {
-    id
     title
-    description
+    id
     price
+    description
     image
     largeImage
+    creator {
+      id
+      name
+      email
+    }
   }
 }
     `;

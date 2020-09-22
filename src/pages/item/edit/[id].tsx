@@ -6,12 +6,14 @@ import InputField from "../../../components/InputField";
 import Layout from "../../../components/Layout";
 import {
   useItemQuery,
+  useMeQuery,
   useUpdateItemMutation,
 } from "../../../generated/graphql";
 import { handleImageUpload } from "../../../utils/handleImageUpload";
 
 const UpdateItem = () => {
   const { query } = useRouter();
+  const { data: meData } = useMeQuery();
   const intId = typeof query.id === "string" ? parseInt(query.id) : -1;
 
   const [
@@ -40,6 +42,14 @@ const UpdateItem = () => {
     return (
       <Layout>
         <h1>No item found</h1>
+      </Layout>
+    );
+  }
+
+  if (itemData.item.creator.id !== meData?.me?.id) {
+    return (
+      <Layout>
+        <h1>You are not authenticated to edit this post!</h1>
       </Layout>
     );
   }

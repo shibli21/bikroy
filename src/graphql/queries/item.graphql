@@ -1,10 +1,15 @@
 query Item($id: Int!) {
   item(id: $id) {
-    id
     title
-    description
+    id
     price
+    description
     image
     largeImage
+    creator {
+      id
+      name
+      email
+    }
   }
 }

@@ -19,12 +19,17 @@ const NavBar = () => {
       <Box ml={"auto"} maxW="1100px">
         <Nextlink href="/items">
           <Link color="white" mr={4}>
-            Buy Items
+            Shop
           </Link>
         </Nextlink>
         <Nextlink href="/create-item">
           <Link mr={4} color="white">
-            Sell Item
+            Sell
+          </Link>
+        </Nextlink>
+        <Nextlink href="/">
+          <Link mr={4} color="white">
+            {data.me.name}
           </Link>
         </Nextlink>
         <Link color="white">
