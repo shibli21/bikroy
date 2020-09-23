@@ -27,6 +27,11 @@ const NavBar = () => {
             Sell
           </Link>
         </Nextlink>
+        <Nextlink href="/cart">
+          <Link mr={4} color="white">
+            Cart : 0
+          </Link>
+        </Nextlink>
         <Nextlink href="/">
           <Link mr={4} color="white">
             {data.me.name}
