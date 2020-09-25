@@ -156,6 +156,19 @@ export type FieldErrorSuccess = {
   message: Scalars['String'];
 };
 
+export type AddToCartMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type AddToCartMutation = (
+  { __typename?: 'Mutation' }
+  & { addToCart: (
+    { __typename?: 'CartItem' }
+    & Pick<CartItem, 'id' | 'quantity'>
+  ) }
+);
+
 export type CreateItemMutationVariables = Exact<{
   input: ItemInput;
 }>;
@@ -337,6 +350,39 @@ export type UserCartQuery = (
 );
 
 
+export const AddToCartDocument = gql`
+    mutation AddToCart($id: Int!) {
+  addToCart(id: $id) {
+    id
+    quantity
+  }
+}
+    `;
+export type AddToCartMutationFn = Apollo.MutationFunction<AddToCartMutation, AddToCartMutationVariables>;
+
+/**
+ * __useAddToCartMutation__
+ *
+ * To run a mutation, you first call `useAddToCartMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddToCartMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addToCartMutation, { data, loading, error }] = useAddToCartMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAddToCartMutation(baseOptions?: Apollo.MutationHookOptions<AddToCartMutation, AddToCartMutationVariables>) {
+        return Apollo.useMutation<AddToCartMutation, AddToCartMutationVariables>(AddToCartDocument, baseOptions);
+      }
+export type AddToCartMutationHookResult = ReturnType<typeof useAddToCartMutation>;
+export type AddToCartMutationResult = Apollo.MutationResult<AddToCartMutation>;
+export type AddToCartMutationOptions = Apollo.BaseMutationOptions<AddToCartMutation, AddToCartMutationVariables>;
 export const CreateItemDocument = gql`
     mutation CreateItem($input: ItemInput!) {
   createItem(input: $input) {

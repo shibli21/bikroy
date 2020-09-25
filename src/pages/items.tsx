@@ -11,9 +11,11 @@ import {
 } from "@chakra-ui/core";
 import React from "react";
 import {
+  useAddToCartMutation,
   useDeleteItemMutation,
   useItemsQuery,
   useMeQuery,
+  UserCartDocument,
 } from "../generated/graphql";
 import NextLink from "next/link";
 import Layout from "../components/Layout";
@@ -25,6 +27,7 @@ const items = (props: Props) => {
   const { data, loading, error } = useItemsQuery();
   const [deleteItem] = useDeleteItemMutation();
   const { data: meData } = useMeQuery();
+  const [addToCart] = useAddToCartMutation();
 
   if (loading) {
     return (
@@ -74,7 +77,23 @@ const items = (props: Props) => {
                   width="auto"
                 />
                 <Flex my={4} ml={2}>
-                  <Button mr={2} variant="solid" variantColor="orange">
+                  <Button
+                    mr={2}
+                    variant="solid"
+                    variantColor="orange"
+                    onClick={() =>
+                      addToCart({
+                        variables: {
+                          id: i.id,
+                        },
+                        refetchQueries: [
+                          {
+                            query: UserCartDocument,
+                          },
+                        ],
+                      })
+                    }
+                  >
                     <Icon name="add" mr={2} />
                     Add to cart
                   </Button>
