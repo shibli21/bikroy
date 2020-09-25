@@ -1,0 +1,18 @@
+query UserCart {
+  userCart {
+    id
+    quantity
+    item {
+      id
+      title
+      description
+      price
+      image
+      largeImage
+    }
+    user {
+      id
+      name
+    }
+  }
+}

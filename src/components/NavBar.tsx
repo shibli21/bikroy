@@ -6,11 +6,19 @@ import {
   MeDocument,
   useLogoutMutation,
   useMeQuery,
+  useUserCartQuery,
 } from "../generated/graphql";
 
 const NavBar = () => {
   const { data } = useMeQuery();
   const [logout, { loading }] = useLogoutMutation();
+  const { data: cart } = useUserCartQuery();
+
+  let sum = 0;
+
+  cart?.userCart?.forEach(async (u) => {
+    sum = sum + u.quantity;
+  });
 
   let body = null;
 
@@ -29,7 +37,7 @@ const NavBar = () => {
         </Nextlink>
         <Nextlink href="/cart">
           <Link mr={4} color="white">
-            Cart : 0
+            Cart :{sum}
           </Link>
         </Nextlink>
         <Nextlink href="/">

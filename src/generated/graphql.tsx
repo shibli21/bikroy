@@ -13,6 +13,7 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  userCart: Array<CartItem>;
   item?: Maybe<Item>;
   items?: Maybe<Array<Item>>;
   me?: Maybe<User>;
@@ -21,6 +22,14 @@ export type Query = {
 
 export type QueryItemArgs = {
   id: Scalars['Int'];
+};
+
+export type CartItem = {
+  __typename?: 'CartItem';
+  id: Scalars['Float'];
+  quantity: Scalars['Float'];
+  item: Item;
+  user: User;
 };
 
 export type Item = {
@@ -43,6 +52,7 @@ export type User = {
   name: Scalars['String'];
   email: Scalars['String'];
   permission: Permissions;
+  cart?: Maybe<CartItem>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -58,6 +68,7 @@ export enum Permissions {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addToCart: CartItem;
   createItem: Item;
   deleteItem: Scalars['Boolean'];
   updateItem?: Maybe<Item>;
@@ -66,6 +77,11 @@ export type Mutation = {
   login: UserResponse;
   requestReset: FieldErrorSuccess;
   resetPassword: UserResponse;
+};
+
+
+export type MutationAddToCartArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -299,6 +315,24 @@ export type MeQuery = (
   & { me?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'name' | 'email' | 'permission'>
+  )> }
+);
+
+export type UserCartQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserCartQuery = (
+  { __typename?: 'Query' }
+  & { userCart: Array<(
+    { __typename?: 'CartItem' }
+    & Pick<CartItem, 'id' | 'quantity'>
+    & { item: (
+      { __typename?: 'Item' }
+      & Pick<Item, 'id' | 'title' | 'description' | 'price' | 'image' | 'largeImage'>
+    ), user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'name'>
+    ) }
   )> }
 );
 
@@ -725,3 +759,48 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const UserCartDocument = gql`
+    query UserCart {
+  userCart {
+    id
+    quantity
+    item {
+      id
+      title
+      description
+      price
+      image
+      largeImage
+    }
+    user {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useUserCartQuery__
+ *
+ * To run a query within a React component, call `useUserCartQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserCartQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserCartQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserCartQuery(baseOptions?: Apollo.QueryHookOptions<UserCartQuery, UserCartQueryVariables>) {
+        return Apollo.useQuery<UserCartQuery, UserCartQueryVariables>(UserCartDocument, baseOptions);
+      }
+export function useUserCartLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserCartQuery, UserCartQueryVariables>) {
+          return Apollo.useLazyQuery<UserCartQuery, UserCartQueryVariables>(UserCartDocument, baseOptions);
+        }
+export type UserCartQueryHookResult = ReturnType<typeof useUserCartQuery>;
+export type UserCartLazyQueryHookResult = ReturnType<typeof useUserCartLazyQuery>;
+export type UserCartQueryResult = Apollo.QueryResult<UserCartQuery, UserCartQueryVariables>;
