@@ -13,7 +13,7 @@ import {
   Icon,
   Image,
   Spinner,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import Layout from "../../components/Layout";
 import NextLink from "next/link";
 

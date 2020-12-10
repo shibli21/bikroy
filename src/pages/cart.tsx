@@ -1,4 +1,4 @@
-import { Box, Heading, Stack } from "@chakra-ui/core";
+import { Box, Heading, Stack } from "@chakra-ui/react";
 import React from "react";
 import Layout from "../components/Layout";
 import { useUserCartQuery } from "../generated/graphql";

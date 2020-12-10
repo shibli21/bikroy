@@ -8,7 +8,7 @@ import {
   Image,
   Link,
   Spinner,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import React from "react";
 import {
   useAddToCartMutation,

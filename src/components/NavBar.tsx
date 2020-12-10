@@ -1,103 +1,167 @@
-import { Box, Button, Flex, Heading, Link } from "@chakra-ui/core";
-import React from "react";
-
+import {
+  Box,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerFooter,
+  DrawerOverlay,
+  Flex,
+  Link,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Stack,
+  useDisclosure,
+} from "@chakra-ui/react";
 import Nextlink from "next/link";
+import { useRouter } from "next/router";
+import React from "react";
+import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
+import { BiSearchAlt } from "react-icons/bi";
+import { FaBars } from "react-icons/fa";
+import { RiCloseFill } from "react-icons/ri";
+import { TiThSmall } from "react-icons/ti";
 import {
   MeDocument,
   useLogoutMutation,
   useMeQuery,
   useUserCartQuery,
 } from "../generated/graphql";
+import MenuItems from "./MenuItems";
 
-const NavBar = () => {
+const NavBar = ({ props }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { data } = useMeQuery();
-  const [logout, { loading }] = useLogoutMutation();
+  const [logout] = useLogoutMutation();
   const { data: cart } = useUserCartQuery();
-
+  const router = useRouter();
   let sum = 0;
 
   cart?.userCart?.forEach(async (u) => {
     sum = sum + u.quantity;
   });
 
-  let body = null;
-
+  let NavLinks;
   if (data?.me) {
-    body = (
-      <Box ml={"auto"} maxW="1100px">
-        <Nextlink href="/items">
-          <Link color="white" mr={4}>
-            Shop
-          </Link>
-        </Nextlink>
-        <Nextlink href="/create-item">
-          <Link mr={4} color="white">
-            Sell
-          </Link>
-        </Nextlink>
-        <Nextlink href="/cart">
-          <Link mr={4} color="white">
-            Cart :{sum}
-          </Link>
-        </Nextlink>
-        <Nextlink href="/">
-          <Link mr={4} color="white">
-            {data.me.name}
-          </Link>
-        </Nextlink>
-        <Link color="white">
-          <Button
-            color="black"
-            variant="solid"
-            isLoading={loading}
-            onClick={() =>
-              logout({
-                refetchQueries: [
-                  {
-                    query: MeDocument,
-                  },
-                ],
-              })
-            }
-          >
-            Logout
-          </Button>
-        </Link>
-      </Box>
+    NavLinks = (
+      <>
+        <MenuItems>
+          <Link>COLLECTIONS</Link>
+        </MenuItems>
+        <MenuItems>
+          <Nextlink href="/items">
+            <Link>SHOP</Link>
+          </Nextlink>
+        </MenuItems>
+        <MenuItems>
+          <Link>BLOG</Link>
+        </MenuItems>
+        <MenuItems>
+          <Nextlink href="/cart">
+            <AiOutlineShoppingCart fontSize="30px" />
+          </Nextlink>
+        </MenuItems>
+        <MenuItems>
+          <BiSearchAlt fontSize="30px" />
+        </MenuItems>
+
+        <MenuItems>
+          <Menu>
+            <MenuButton as="div">
+              <AiOutlineUser fontSize="30px" />
+            </MenuButton>
+            <MenuList borderRadius={0} py={0}>
+              <MenuItem>{data.me.name}</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  logout({
+                    refetchQueries: [
+                      {
+                        query: MeDocument,
+                      },
+                    ],
+                  });
+                  router.reload();
+                }}
+              >
+                Logout
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </MenuItems>
+      </>
     );
   } else {
-    body = (
-      <Box ml={"auto"} maxW="1100px">
-        <Nextlink href="/login">
-          <Link color="white" mr={4}>
-            Login
-          </Link>
-        </Nextlink>
-        <Nextlink href="/register">
-          <Link color="white">Register</Link>
-        </Nextlink>
-      </Box>
+    NavLinks = (
+      <>
+        <MenuItems>
+          <Nextlink href="/login">
+            <Link>Log in</Link>
+          </Nextlink>
+        </MenuItems>
+        <MenuItems>
+          <Nextlink href="/register">
+            <Link>Sign up</Link>
+          </Nextlink>
+        </MenuItems>
+      </>
     );
   }
+
   return (
-    <Flex
-      position="sticky"
-      top={0}
-      mb={4}
-      zIndex={1}
-      bg="black"
-      align="center"
-      p={2}
-    >
-      <Flex maxW={1100} m="auto" align="center" flex={1}>
+    <Box top={0} position="sticky" zIndex={100}>
+      <Flex
+        as="nav"
+        align="center"
+        justify="space-between"
+        wrap="wrap"
+        padding="1rem"
+        {...props}
+      >
         <Nextlink href="/">
-          <Link color="white">
-            <Heading>Bikory</Heading>
-          </Link>
+          <TiThSmall cursor="pointer" fontSize="40px" />
         </Nextlink>
-        {body}
+        <Flex
+          display={["none", "none", "inherit", "inherit"]}
+          align="center"
+          justify="center"
+        >
+          {NavLinks}
+        </Flex>
+        <Box display={["block", "block", "none", "none"]}>
+          <>
+            <Box key="bar">
+              <Box color="primary" onClick={onOpen}>
+                <FaBars size="40px" />
+              </Box>
+            </Box>
+            <Drawer
+              size="xs"
+              isOpen={isOpen}
+              placement="right"
+              onClose={onClose}
+            >
+              <DrawerOverlay />
+              <DrawerContent>
+                <DrawerCloseButton m={4}>
+                  <Box color="primary">
+                    <RiCloseFill size="60px" />
+                  </Box>
+                </DrawerCloseButton>
+                <DrawerBody pt="150px">
+                  <Stack spacing="24px" align="center">
+                    {NavLinks}
+                  </Stack>
+                </DrawerBody>
+                <DrawerFooter></DrawerFooter>
+              </DrawerContent>
+            </Drawer>
+          </>
+        </Box>
       </Flex>
-    </Flex>
+    </Box>
   );
 };
 
