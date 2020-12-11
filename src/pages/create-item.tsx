@@ -1,9 +1,8 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Container } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import InputField from "../components/InputField";
-import Layout from "../components/Layout";
 import { useCreateItemMutation } from "../generated/graphql";
 import { handleImageUpload } from "../utils/handleImageUpload";
 
@@ -13,7 +12,7 @@ const CreateItem = () => {
   const [createItem, { data }] = useCreateItemMutation();
 
   return (
-    <Layout>
+    <Container maxW="6xl">
       <Box maxW="400px" mx="auto">
         <Formik
           initialValues={{
@@ -68,7 +67,7 @@ const CreateItem = () => {
           )}
         </Formik>
       </Box>
-    </Layout>
+    </Container>
   );
 };
 export default CreateItem;

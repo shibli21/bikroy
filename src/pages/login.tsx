@@ -1,16 +1,15 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Container } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
+import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import InputField from "../components/InputField";
-import Layout from "../components/Layout";
-import { MeDocument, useLoginMutation, useMeQuery } from "../generated/graphql";
-import NextLink from "next/link";
+import { MeDocument, useLoginMutation } from "../generated/graphql";
 const Register = () => {
   const router = useRouter();
   const [login] = useLoginMutation();
   return (
-    <Layout>
+    <Container maxW="6xl">
       <Box maxW="400px" mx="auto">
         <Formik
           initialValues={{
@@ -58,7 +57,7 @@ const Register = () => {
           )}
         </Formik>
       </Box>
-    </Layout>
+    </Container>
   );
 };
 export default Register;

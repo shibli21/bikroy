@@ -1,15 +1,13 @@
-import { Box, Button, Spinner } from "@chakra-ui/react";
-import { Formik, Form } from "formik";
+import { Box, Button, Container, Spinner } from "@chakra-ui/react";
+import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
 import InputField from "../../../components/InputField";
-import Layout from "../../../components/Layout";
 import {
   useItemQuery,
   useMeQuery,
   useUpdateItemMutation,
 } from "../../../generated/graphql";
-import { handleImageUpload } from "../../../utils/handleImageUpload";
 
 const UpdateItem = () => {
   const { query } = useRouter();
@@ -40,22 +38,22 @@ const UpdateItem = () => {
 
   if (!itemData.item) {
     return (
-      <Layout>
+      <Container maxW="6xl">
         <h1>No item found</h1>
-      </Layout>
+      </Container>
     );
   }
 
   if (itemData.item.creator.id !== meData?.me?.id) {
     return (
-      <Layout>
+      <Container maxW="6xl">
         <h1>You are not authenticated to edit this post!</h1>
-      </Layout>
+      </Container>
     );
   }
 
   return (
-    <Layout>
+    <Container maxW="6xl">
       <Box maxW="400px" mx="auto">
         <Formik
           initialValues={{
@@ -92,7 +90,7 @@ const UpdateItem = () => {
           )}
         </Formik>
       </Box>
-    </Layout>
+    </Container>
   );
 };
 

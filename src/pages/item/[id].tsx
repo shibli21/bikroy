@@ -1,21 +1,20 @@
-import React from "react";
 import {
-  useDeleteItemMutation,
-  useItemQuery,
-  useMeQuery,
-} from "../../generated/graphql";
-import { useRouter } from "next/router";
-import {
-  Box,
   Button,
+  Container,
   Flex,
   Heading,
   Icon,
   Image,
   Spinner,
 } from "@chakra-ui/react";
-import Layout from "../../components/Layout";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
+import React from "react";
+import {
+  useDeleteItemMutation,
+  useItemQuery,
+  useMeQuery,
+} from "../../generated/graphql";
 
 const Item = () => {
   const { query } = useRouter();
@@ -43,14 +42,14 @@ const Item = () => {
 
   if (!data.item) {
     return (
-      <Layout>
+      <Container maxW="6xl">
         <h1>No item found</h1>
-      </Layout>
+      </Container>
     );
   }
 
   return (
-    <Layout>
+    <Container maxW="6xl">
       <Heading>{data.item.title}</Heading>
       <h2>{data.item.description}</h2>
       <h2>{data.item.price}</h2>
@@ -93,7 +92,7 @@ const Item = () => {
           </>
         )}
       </Flex>
-    </Layout>
+    </Container>
   );
 };
 

@@ -1,9 +1,8 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Container } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
 import InputField from "../../components/InputField";
-import Layout from "../../components/Layout";
 import { MeDocument, useResetPasswordMutation } from "../../generated/graphql";
 
 const ResetPassword = ({ token }) => {
@@ -11,7 +10,7 @@ const ResetPassword = ({ token }) => {
   const [resetPassword] = useResetPasswordMutation();
 
   return (
-    <Layout>
+    <Container maxW="6xl">
       <Box maxW="400px" mx="auto">
         <Formik
           initialValues={{
@@ -47,7 +46,7 @@ const ResetPassword = ({ token }) => {
           )}
         </Formik>
       </Box>
-    </Layout>
+    </Container>
   );
 };
 

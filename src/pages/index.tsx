@@ -1,10 +1,10 @@
-import { Heading } from "@chakra-ui/react";
-import Layout from "../components/Layout";
+import { Box } from "@chakra-ui/react";
+import Hero from "../components/Hero";
 
 const Index = () => (
-  <Layout>
-    <Heading>HOME PAGE</Heading>
-  </Layout>
+  <Box>
+    <Hero />
+  </Box>
 );
 
 export default Index;

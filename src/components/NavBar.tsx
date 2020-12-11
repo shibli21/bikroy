@@ -31,7 +31,7 @@ import {
 } from "../generated/graphql";
 import MenuItems from "./MenuItems";
 
-const NavBar = ({ props }) => {
+const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data } = useMeQuery();
   const [logout] = useLogoutMutation();
@@ -117,8 +117,8 @@ const NavBar = ({ props }) => {
         align="center"
         justify="space-between"
         wrap="wrap"
-        padding="1rem"
-        {...props}
+        h="70px"
+        p="1rem"
       >
         <Nextlink href="/">
           <TiThSmall cursor="pointer" fontSize="40px" />

@@ -1,6 +1,5 @@
-import { Box, Heading, Stack } from "@chakra-ui/react";
+import { Box, Container, Heading, Stack } from "@chakra-ui/react";
 import React from "react";
-import Layout from "../components/Layout";
 import { useUserCartQuery } from "../generated/graphql";
 
 interface Props {}
@@ -9,7 +8,7 @@ const Cart = () => {
   const { data } = useUserCartQuery();
 
   return (
-    <Layout>
+    <Container maxW="6xl">
       <Heading>Your cart</Heading>
       <Stack isInline m={4}>
         <Heading ml={4}>Item</Heading>
@@ -25,7 +24,7 @@ const Cart = () => {
           </Box>
         </>
       ))}
-    </Layout>
+    </Container>
   );
 };
 export default Cart;

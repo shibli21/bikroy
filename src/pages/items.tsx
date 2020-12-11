@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Container,
   Flex,
   Grid,
   Heading,
@@ -9,6 +10,7 @@ import {
   Link,
   Spinner,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 import React from "react";
 import {
   useAddToCartMutation,
@@ -17,9 +19,6 @@ import {
   useMeQuery,
   UserCartDocument,
 } from "../generated/graphql";
-import NextLink from "next/link";
-import Layout from "../components/Layout";
-import Item from "./item/[id]";
 
 interface Props {}
 
@@ -46,14 +45,14 @@ const items = (props: Props) => {
 
   if (data && data.items.length === 0) {
     return (
-      <Layout>
+      <Container maxW="6xl">
         <Heading>No items!!</Heading>
-      </Layout>
+      </Container>
     );
   }
   return (
     <>
-      <Layout>
+      <Container maxW="6xl">
         <Box maxW="800px" marginX="auto">
           <br />
           <br />
@@ -132,7 +131,7 @@ const items = (props: Props) => {
             ))}
           </Grid>
         </Box>
-      </Layout>
+      </Container>
     </>
   );
 };
