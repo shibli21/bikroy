@@ -1,4 +1,4 @@
-import { Box, Button, Container } from "@chakra-ui/react";
+import { Box, Button, Grid, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
@@ -8,9 +8,15 @@ import { MeDocument, useLoginMutation } from "../generated/graphql";
 const Register = () => {
   const router = useRouter();
   const [login] = useLoginMutation();
+
   return (
-    <Container maxW="6xl">
-      <Box maxW="400px" mx="auto">
+    <Grid
+      h="100vh"
+      gridTemplateColumns={["1fr ", "1fr", "1fr 1fr", "1fr 1fr"]}
+      mt="-70px"
+    >
+      <Box bg="gray.700" display={["none", "none", "block", "block"]}></Box>
+      <Box w={["auto", "400px"]} justifySelf="center" alignSelf="center">
         <Formik
           initialValues={{
             email: "",
@@ -33,31 +39,42 @@ const Register = () => {
         >
           {({ isSubmitting }) => (
             <Form>
-              <InputField name="email" label="Email" />
-              <InputField name="password" label="Password" type="password" />
-              <Button
-                mt={4}
-                variantColor="teal"
-                isLoading={isSubmitting}
-                type="submit"
-              >
-                Login
-              </Button>
+              <InputField name="email" label="Email" placeholder="Email" />
+              <InputField
+                name="password"
+                label="Password"
+                type="password"
+                placeholder="Password"
+              />
 
               <Button
-                ml={4}
                 mt={4}
-                variantColor="red"
                 isLoading={isSubmitting}
                 type="submit"
+                borderRadius={0}
+                textTransform="uppercase"
+                bg="gray.900"
+                color="white"
+                fontWeight="normal"
+                _hover={{
+                  bg: "gray.700",
+                }}
+                w="100%"
               >
-                <NextLink href="/forgot-password">Forgot password</NextLink>
+                Sign in
               </Button>
             </Form>
           )}
         </Formik>
+        <Text mt={6} textAlign="center" color="gray.500">
+          <NextLink href="/forgot-password">Forgot password?</NextLink>
+        </Text>
+        <Text color="gray.500" textAlign="center">
+          Don't have account?
+          <NextLink href="/register"> Sign up</NextLink>
+        </Text>
       </Box>
-    </Container>
+    </Grid>
   );
 };
 export default Register;
