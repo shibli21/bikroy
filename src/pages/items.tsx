@@ -1,23 +1,33 @@
 import {
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
   Button,
+  Center,
   Container,
+  Divider,
   Flex,
   Grid,
   Heading,
-  Icon,
-  Image,
   Link,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItemOption,
+  MenuList,
+  MenuOptionGroup,
   Spinner,
+  Text,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import NextLink from "next/link";
 import React from "react";
+import { FaArrowRight } from "react-icons/fa";
 import {
   useAddToCartMutation,
   useDeleteItemMutation,
   useItemsQuery,
   useMeQuery,
-  UserCartDocument,
 } from "../generated/graphql";
 
 interface Props {}
@@ -52,85 +62,120 @@ const items = (props: Props) => {
   }
   return (
     <>
-      <Container maxW="6xl">
-        <Box maxW="800px" marginX="auto">
-          <br />
-          <br />
-          <br />
-          <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+      <Container maxW="7xl">
+        <Text
+          textAlign="center"
+          fontSize="3rem"
+          fontWeight="semibold"
+          color="gray.500"
+        >
+          SHOP
+        </Text>
+        <Center mb={4}>
+          <Breadcrumb
+            spacing="8px"
+            separator={<FaArrowRight color="gray.500" />}
+            color="gray.500"
+          >
+            <BreadcrumbItem>
+              <NextLink href="/">Home</NextLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+              <NextLink href="/items">Shop</NextLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
+        </Center>
+        <Divider
+          height="2px"
+          bg="gray.500"
+          mb={10}
+          size="xl"
+          orientation="horizontal"
+        />
+        <Flex justify="space-between" mb={4}>
+          <Menu closeOnSelect={false}>
+            <MenuButton>
+              <Button
+                border="2px solid"
+                borderColor="gray.900"
+                borderRadius={0}
+                variant="outline"
+              >
+                FILTER
+              </Button>
+            </MenuButton>
+            <MenuList
+              minWidth="140px"
+              borderRadius={0}
+              border="2px solid black"
+              py={0}
+            >
+              <MenuOptionGroup type="checkbox">
+                <MenuItemOption value="men">Men</MenuItemOption>
+                <MenuItemOption value="women">Women</MenuItemOption>
+                <MenuItemOption value="children">Children</MenuItemOption>
+              </MenuOptionGroup>
+            </MenuList>
+          </Menu>
+          <Menu closeOnSelect={false}>
+            <MenuButton>
+              <Text fontWeight="semibold">SORT BY </Text>
+            </MenuButton>
+            <MenuList
+              minWidth="180px"
+              borderRadius={0}
+              border="2px solid black"
+            >
+              <MenuOptionGroup defaultValue="asc" title="Order" type="radio">
+                <MenuItemOption value="asc">Ascending</MenuItemOption>
+                <MenuItemOption value="desc">Descending</MenuItemOption>
+              </MenuOptionGroup>
+              <MenuDivider />
+              <MenuOptionGroup type="checkbox">
+                <MenuItemOption value="Latest">Latest</MenuItemOption>
+              </MenuOptionGroup>
+              <MenuOptionGroup title="Price" type="radio">
+                <MenuItemOption value="high">High to Low</MenuItemOption>
+                <MenuItemOption value="low">Low to High</MenuItemOption>
+              </MenuOptionGroup>
+            </MenuList>
+          </Menu>
+        </Flex>
+        <Center>
+          <Grid
+            templateColumns={[
+              "1fr",
+              "1fr 1fr",
+              "1fr 1fr 1fr",
+              "1fr 1fr 1fr 1fr",
+            ]}
+            gap={6}
+          >
             {data.items.map((i) => (
-              <Box shadow="md" mb={4} p={3} key={i.id}>
-                <NextLink href="/item/[id]" as={`/item/${i.id}`}>
-                  <Link>
-                    <Heading fontSize="xl"> {i.title}</Heading>
-                  </Link>
-                </NextLink>
-                <h2>Description : {i.description}</h2>
-                <h2>Price : {i.price}</h2>
-                <h2>Posted by : {i.creator.name}</h2>
+              <Box bg="gray.50" mb={4} key={i.id}>
                 <Image
-                  marginX="auto"
-                  src={i.image}
+                  src={i.largeImage}
                   alt={i.title}
-                  height="450px"
+                  height="380px"
                   width="auto"
+                  objectFit="cover"
                 />
-                <Flex my={4} ml={2}>
-                  <Button
-                    mr={2}
-                    variant="solid"
-                    variantColor="orange"
-                    onClick={() =>
-                      addToCart({
-                        variables: {
-                          id: i.id,
-                        },
-                        refetchQueries: [
-                          {
-                            query: UserCartDocument,
-                          },
-                        ],
-                      })
-                    }
-                  >
-                    <Icon name="add" mr={2} />
-                    Add to cart
-                  </Button>
-
-                  {meData?.me?.id === i.creator.id && (
-                    <>
-                      <Button mr={2} variant="solid" variantColor="teal">
-                        <Icon name="edit" mr={2} />
-                        <NextLink
-                          href="/item/edit/[id]"
-                          as={`/item/edit/${i.id}`}
-                        >
-                          Edit
-                        </NextLink>
-                      </Button>
-                      <Button
-                        mr={2}
-                        variant="solid"
-                        variantColor="red"
-                        onClick={() =>
-                          deleteItem({
-                            variables: { id: i.id },
-                            update: (cache) => {
-                              cache.evict({ id: "Item:" + i.id });
-                            },
-                          })
-                        }
-                      >
-                        <Icon name="delete" mr={2} />
-                        Delete
-                      </Button>
-                    </>
-                  )}
-                </Flex>
+                <Box p={3}>
+                  <NextLink href="/item/[id]" as={`/item/${i.id}`}>
+                    <Link>
+                      <Text fontSize="md" fontWeight="semibold">
+                        {i.title.slice(0, 18)}
+                      </Text>
+                    </Link>
+                  </NextLink>
+                  <Text fontSize="md" color="gray.500">
+                    ${i.price}
+                  </Text>
+                </Box>
               </Box>
             ))}
           </Grid>
-        </Box>
+        </Center>
       </Container>
     </>
   );
