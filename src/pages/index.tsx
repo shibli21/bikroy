@@ -1,11 +1,15 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Container } from "@chakra-ui/react";
 import Collections from "../components/Collections";
+import Footer from "../components/Footer";
 import Hero from "../components/Hero";
 
 const Index = () => (
   <>
     <Hero />
-    <Collections />
+    <Container maxW="7xl">
+      <Collections />
+      <Footer />
+    </Container>
   </>
 );
 

@@ -2,6 +2,7 @@ import { Box, Button, Container } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import Footer from "../components/Footer";
 import InputField from "../components/InputField";
 import { useCreateItemMutation } from "../generated/graphql";
 import { handleImageUpload } from "../utils/handleImageUpload";
@@ -67,6 +68,7 @@ const CreateItem = () => {
           )}
         </Formik>
       </Box>
+      <Footer />
     </Container>
   );
 };

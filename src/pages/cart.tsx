@@ -21,6 +21,7 @@ import NextLink from "next/link";
 import { useUserCartQuery } from "../generated/graphql";
 import { FaArrowRight } from "react-icons/fa";
 import Image from "next/image";
+import Footer from "../components/Footer";
 
 interface Props {}
 
@@ -182,6 +183,7 @@ const Cart = () => {
           Proceed to checkout
         </Button>
       </Box>
+      <Footer />
     </Container>
   );
 };

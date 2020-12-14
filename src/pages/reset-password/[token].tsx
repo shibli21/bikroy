@@ -2,6 +2,7 @@ import { Box, Button, Container } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
+import Footer from "../../components/Footer";
 import InputField from "../../components/InputField";
 import { MeDocument, useResetPasswordMutation } from "../../generated/graphql";
 
@@ -46,6 +47,7 @@ const ResetPassword = ({ token }) => {
           )}
         </Formik>
       </Box>
+      <Footer />
     </Container>
   );
 };

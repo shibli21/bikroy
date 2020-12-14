@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
+import Footer from "../../components/Footer";
 import {
   useAddToCartMutation,
   useItemQuery,
@@ -205,6 +206,7 @@ const Item = () => {
           </Grid>
         </Box>
       </Grid>
+      <Footer />
     </Container>
   );
 };

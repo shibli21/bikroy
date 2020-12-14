@@ -1,6 +1,7 @@
 import { Alert, AlertIcon, Box, Button, Container } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import React, { useState } from "react";
+import Footer from "../components/Footer";
 import InputField from "../components/InputField";
 import {
   RequestResetMutation,
@@ -64,6 +65,7 @@ const ForgotPassword = () => {
           )}
         </Formik>
       </Box>
+      <Footer />
     </Container>
   );
 };

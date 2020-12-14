@@ -2,6 +2,7 @@ import { Box, Button, Container, Spinner } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
+import Footer from "../../../components/Footer";
 import InputField from "../../../components/InputField";
 import {
   useItemQuery,
@@ -90,6 +91,7 @@ const UpdateItem = () => {
           )}
         </Formik>
       </Box>
+      <Footer />
     </Container>
   );
 };

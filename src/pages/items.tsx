@@ -23,6 +23,7 @@ import Image from "next/image";
 import NextLink from "next/link";
 import React from "react";
 import { FaArrowRight } from "react-icons/fa";
+import Footer from "../components/Footer";
 import {
   useAddToCartMutation,
   useDeleteItemMutation,
@@ -176,6 +177,7 @@ const items = (props: Props) => {
             ))}
           </Grid>
         </Center>
+        <Footer />
       </Container>
     </>
   );
